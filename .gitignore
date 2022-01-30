@@ -1,4 +1,5 @@
 build/
 buildvr/
+buildae/
 vcpkg_installed/
 .idea/

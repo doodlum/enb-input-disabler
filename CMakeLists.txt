@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.20)
 set(NAME "ENBInputDisabler")
 set(VERSION 1.0.0)
-set(VR_VERSION 1)
 
 # ---- Options ----
 
 option(COPY_BUILD "Copy the build output to the Skyrim directory." TRUE)
+option(BUILD_DEBUG "Enable debugging options" OFF)
 option(BUILD_SKYRIMAE "Build for Skyrim AE" OFF)
 option(BUILD_SKYRIMVR "Build for Skyrim VR" OFF)
 
@@ -17,31 +17,17 @@ macro(set_from_environment VARIABLE)
 	endif ()
 endmacro()
 
-macro(find_commonlib_path)
-	if (CommonLibName AND NOT ${CommonLibName} STREQUAL "")
-		# Check extern
-		find_path(CommonLibPath
-		include/REL/Relocation.h
-		PATHS external/${CommonLibName})
-		if (${CommonLibPath} STREQUAL "CommonLibPath-NOTFOUND")
-			#Check path
-			set_from_environment(${CommonLibName}Path)
-			set(CommonLibPath ${${CommonLibName}Path})
-		endif()
-	endif()
-endmacro()
+
 
 if(BUILD_SKYRIMVR)
 	add_compile_definitions(SKYRIMVR)
-	add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
-	set(CommonLibName "CommonLibVR")
+	set(CommonLibName "CommonLibSSE")
 	set_from_environment(SkyrimVRPath)
 	set(SkyrimPath ${SkyrimVRPath})
 	set(SkyrimVersion "Skyrim VR")
-	set(VERSION ${VERSION}.${VR_VERSION})
 elseif(BUILD_SKYRIMAE)
 	add_compile_definitions(SKYRIMAE)
-	set(CommonLibName "CommonLibAE")
+	set(CommonLibName "CommonLibSSE")
 	set_from_environment(Skyrim64Path)
 	set(SkyrimPath ${Skyrim64Path})
 	set(SkyrimVersion "Skyrim AE")
@@ -52,11 +38,10 @@ else()
 	set(SkyrimPath ${Skyrim64Path})
 	set(SkyrimVersion "Skyrim SSE")
 endif()
-find_commonlib_path()
-message(
-	STATUS
-	"Building ${NAME} ${VERSION} for ${SkyrimVersion} at ${SkyrimPath} with ${CommonLibName} at ${CommonLibPath}."
-)
+
+if(NOT BUILD_DEBUG)
+	add_compile_definitions(NDEBUG)
+endif()
 
 set(Boost_USE_STATIC_RUNTIME ON)
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
@@ -113,14 +98,13 @@ set(Boost_USE_STATIC_LIBS ON)
 
 # ---- Dependencies ----
 
-if (DEFINED CommonLibPath AND NOT ${CommonLibPath} STREQUAL "" AND IS_DIRECTORY ${CommonLibPath})
-	add_subdirectory(${CommonLibPath} ${CommonLibName})
-else ()
-	message(
-		FATAL_ERROR
-		"Variable ${CommonLibName}Path is not set."
-	)
-endif ()
+if(BUILD_SKYRIMVR)
+	add_subdirectory("external/CommonLibAEVR" CommonLibSSE)
+elseif(BUILD_SKYRIMAE)
+	add_subdirectory("external/CommonLibAE" CommonLibSSE)
+else()
+	add_subdirectory("external/CommonLibSSE" CommonLibSSE)
+endif()
 
 find_package(mmio REQUIRED CONFIG)
 find_package(spdlog CONFIG REQUIRED)

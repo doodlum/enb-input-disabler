@@ -10,4 +10,8 @@ cd ./external/CommonLibVR
 git checkout vr
 cd ../../
 
+git submodule add https://github.com/Exit-9B/CommonLibSSE.git ./external/CommonLibAEVR
+cd ./external/CommonLibAEVR
+git checkout vr
+
 pause

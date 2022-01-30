@@ -7,3 +7,6 @@
 [submodule "external/CommonLibVR"]
 	path = external/CommonLibVR
 	url = https://github.com/alandtse/CommonLibVR.git
+[submodule "external/CommonLibAEVR"]
+	path = external/CommonLibAEVR
+	url = https://github.com/Exit-9B/CommonLibSSE.git
