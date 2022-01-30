@@ -14,4 +14,7 @@ git submodule add https://github.com/Exit-9B/CommonLibSSE.git ./external/CommonL
 cd ./external/CommonLibAEVR
 git checkout vr
 
+git submodule add https://github.com/Ryan-rsm-McKenzie/CommonLibF4.git ./external/CommonLibF4
+
+
 pause

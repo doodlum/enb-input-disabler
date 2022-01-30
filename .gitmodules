@@ -10,3 +10,6 @@
 [submodule "external/CommonLibAEVR"]
 	path = external/CommonLibAEVR
 	url = https://github.com/Exit-9B/CommonLibSSE.git
+[submodule "external/CommonLibF4"]
+	path = external/CommonLibF4
+	url = https://github.com/Ryan-rsm-McKenzie/CommonLibF4.git

@@ -4,10 +4,12 @@ set(VERSION 1.0.0)
 
 # ---- Options ----
 
-option(COPY_BUILD "Copy the build output to the Skyrim directory." TRUE)
+option(COPY_BUILD "Copy the build output to the game directory." TRUE)
 option(BUILD_DEBUG "Enable debugging options" OFF)
 option(BUILD_SKYRIMAE "Build for Skyrim AE" OFF)
 option(BUILD_SKYRIMVR "Build for Skyrim VR" OFF)
+option(BUILD_SKYRIMVR "Build for Fallout 4" OFF)
+
 
 # ---- Cache build vars ----
 
@@ -23,20 +25,26 @@ if(BUILD_SKYRIMVR)
 	add_compile_definitions(SKYRIMVR)
 	set(CommonLibName "CommonLibSSE")
 	set_from_environment(SkyrimVRPath)
-	set(SkyrimPath ${SkyrimVRPath})
-	set(SkyrimVersion "Skyrim VR")
+	set(GamePath ${SkyrimVRPath})
+	set(GameVersion "Skyrim VR")
 elseif(BUILD_SKYRIMAE)
 	add_compile_definitions(SKYRIMAE)
 	set(CommonLibName "CommonLibSSE")
 	set_from_environment(Skyrim64Path)
-	set(SkyrimPath ${Skyrim64Path})
-	set(SkyrimVersion "Skyrim AE")
+	set(GamePath ${Skyrim64Path})
+	set(GameVersion "Skyrim AE")
+elseif(BUILD_FALLOUT4)
+	add_compile_definitions(FALLOUT4)
+	set(CommonLibName "CommonLibF4")
+	set_from_environment(Fallout4Path)
+	set(GamePath ${Fallout4Path})
+	set(GameVersion "Fallout 4")
 else()
 	add_compile_definitions(SKYRIMSE)
 	set(CommonLibName "CommonLibSSE")
 	set_from_environment(Skyrim64Path)
-	set(SkyrimPath ${Skyrim64Path})
-	set(SkyrimVersion "Skyrim SSE")
+	set(GamePath ${Skyrim64Path})
+	set(GameVersion "Skyrim SSE")
 endif()
 
 if(NOT BUILD_DEBUG)
@@ -102,6 +110,8 @@ if(BUILD_SKYRIMVR)
 	add_subdirectory("external/CommonLibAEVR" CommonLibSSE)
 elseif(BUILD_SKYRIMAE)
 	add_subdirectory("external/CommonLibAE" CommonLibSSE)
+elseif(BUILD_FALLOUT4)
+	add_subdirectory("external/CommonLibF4/CommonLibF4" CommonLibF4)
 else()
 	add_subdirectory("external/CommonLibSSE" CommonLibSSE)
 endif()
@@ -228,17 +238,17 @@ target_precompile_headers(
 # ---- Post build ----
 
 if (COPY_BUILD)
-	if (DEFINED SkyrimPath)
+	if (DEFINED GamePath)
 		add_custom_command(
 			TARGET ${PROJECT_NAME}
 			POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> ${SkyrimPath}/Data/SKSE/Plugins/
-			COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_PDB_FILE:${PROJECT_NAME}> ${SkyrimPath}/Data/SKSE/Plugins/
+			COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> ${GamePath}/Data/SKSE/Plugins/
+			COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_PDB_FILE:${PROJECT_NAME}> ${GamePath}/Data/SKSE/Plugins/
 		)
 	else ()
 		message(
 			WARNING
-			"Variable ${SkyrimPath} is not defined. Skipping post-build copy command."
+			"Variable ${GamePath} is not defined. Skipping post-build copy command."
 		)
 	endif ()
 endif ()

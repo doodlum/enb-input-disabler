@@ -84,6 +84,21 @@
    ],
    "name": "vs2022-windows-vcpkg-vr",
    "toolset": "v143"
+ },
+    {
+    "binaryDir": "${sourceDir}/buildf4",
+    "cacheVariables": {
+     "CMAKE_CXX_FLAGS": "/EHsc /MP /W4 /WX $penv{CXXFLAGS}",
+     "BUILD_FALLOUT4": true
+   },
+   "generator": "Visual Studio 17 2022",
+   "inherits": [
+     "cmake-dev",
+     "vcpkg",
+     "windows"
+   ],
+   "name": "vs2022-windows-vcpkg-f4",
+   "toolset": "v143"
  }
 ],
   "version": 2
