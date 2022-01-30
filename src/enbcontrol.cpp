@@ -12,11 +12,7 @@ void ENBControl::Update()
 	auto IsEffectsWndActive = ENBSDK::enbGetState(ENBSDK::ENBState_IsEffectsWndActive);
 
 	if (controlMap) {
-		if (IsEditorActive && IsEffectsWndActive) {
-			controlMap->ignoreKeyboardMouse = true;
-		} else {
-			controlMap->ignoreKeyboardMouse = false;
-		}
+		controlMap->ignoreKeyboardMouse = (IsEditorActive && IsEffectsWndActive);
 	}
 }
 
@@ -25,18 +21,7 @@ void ENBControl::Update()
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 void WINAPI ENBSDK::CallbackFunction(ENBCallbackType calltype)
 {
-	if (calltype == ENBCallback_PostLoad) {
-	}
-
-	if (calltype == ENBCallback_PreSave) {
-	}
-
-	if (calltype == ENBCallback_BeginFrame) {
-		ENBControl::Update();
-	}
-
-	if (calltype == ENBCallback_EndFrame) {
-	}
+	if (calltype == ENBCallback_BeginFrame) ENBControl::Update();
 }
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

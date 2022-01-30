@@ -63,9 +63,9 @@ namespace ENBSDK {
 	//
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-	_ENBGetSDKVersion enbGetSDKVersion = NULL;
-	_ENBSetCallbackFunction enbSetCallbackFunction = NULL;
-	_ENBStateType enbGetState = NULL;
+	inline static _ENBGetSDKVersion enbGetSDKVersion = NULL;
+	inline static _ENBSetCallbackFunction enbSetCallbackFunction = NULL;
+	inline static _ENBStateType enbGetState = NULL;
 
 	void ENBLinkFunctions();
 	void WINAPI CallbackFunction(ENBCallbackType calltype);

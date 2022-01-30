@@ -2,13 +2,6 @@
 
 void InitLogger()
 {
-	static bool initialized = false;
-	if (!initialized) {
-		initialized = true;
-	} else {
-		return;
-	}
-
 #ifndef NDEBUG
 	auto sink = std::make_shared<spdlog::sinks::msvc_sink_mt>();
 #else
@@ -41,7 +34,9 @@ extern "C" DLLEXPORT bool SKSEAPI SKSEPlugin_Load(const SKSE::LoadInterface* a_s
 #ifndef NDEBUG
 	while (!IsDebuggerPresent())
 #endif
+#ifdef SKYRIMAE
 	InitLogger();
+#endif
 
 	SKSE::Init(a_skse);
 
