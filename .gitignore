@@ -1,0 +1,4 @@
+build/
+buildvr/
+vcpkg_installed/
+.idea/
