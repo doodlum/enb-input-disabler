@@ -1,13 +1,16 @@
 cmake_minimum_required(VERSION 3.20)
 set(NAME "ENBInputDisabler")
-set(VERSION 1.0.0)
+set(VERSION 1.0.2)
 
 # ---- Options ----
 
 option(COPY_BUILD "Copy the build output to the game directory." TRUE)
+
 option(BUILD_DEBUG "Enable debugging options" OFF)
+
 option(BUILD_SKYRIMAE "Build for Skyrim AE" OFF)
 option(BUILD_SKYRIMVR "Build for Skyrim VR" OFF)
+
 option(BUILD_SKYRIMVR "Build for Fallout 4" OFF)
 
 
@@ -18,8 +21,6 @@ macro(set_from_environment VARIABLE)
 		set(${VARIABLE} $ENV{${VARIABLE}})
 	endif ()
 endmacro()
-
-
 
 if(BUILD_SKYRIMVR)
 	add_compile_definitions(SKYRIMVR)
