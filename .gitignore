@@ -1,6 +1,4 @@
 build/
-buildvr/
-buildae/
-buildf4/
+dist/
 vcpkg_installed/
 .idea/
