@@ -21,7 +21,7 @@ xcopy "build\pre-ae\release\*.dll" "dist\pre-ae\SKSE\Plugins\" /I /Y
 xcopy "build\post-ae\release\*.dll" "dist\post-ae\SKSE\Plugins\" /I /Y
 xcopy "build\vr\release\*.dll" "dist\vr\SKSE\Plugins\" /I /Y
 
-xcopy "package\skyrim" "dist" /I /Y
+xcopy "package\skyrim" "dist" /I /Y /E
 
 cd dist
 powershell Compress-Archive -Force -Path * -DestinationPath "ENBInputDisabler-FOMOD.zip"
