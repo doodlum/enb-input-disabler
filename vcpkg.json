@@ -9,6 +9,6 @@
     "rsm-binary-io",
     "spdlog",
     "fmt",
-    "mmio"
+    "rsm-mmio"
   ]
 }
