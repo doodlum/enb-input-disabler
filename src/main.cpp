@@ -52,7 +52,8 @@ extern "C" DLLEXPORT constinit auto SKSEPlugin_Version =
 		v.pluginVersion = Version::MAJOR;
 		v.PluginName(Version::PROJECT);
 		v.AuthorName("doodlez"sv);
-		v.UsesAddressLibrary(true);
+		v.UsesAddressLibrary();
+		v.UsesNoStructs();
 		return v;
 }();
 
