@@ -6,7 +6,7 @@
 #	include "RE/Skyrim.h"
 #	include "SKSE/SKSE.h"
 #	include <xbyak/xbyak.h>
-
+#define NDEBUG
 #ifdef NDEBUG
 #	include <spdlog/sinks/basic_file_sink.h>
 #else
@@ -62,7 +62,10 @@ namespace stl
 }
 
 namespace logger = SKSE::log;
+
+#ifndef NDEBUG
 namespace WinAPI = SKSE::WinAPI;
+#endif
 
 namespace util
 {
