@@ -10,7 +10,8 @@ void ENBControl::Update()
 
 	auto IsEditorActive = ENBSDK::enbGetState(ENBSDK::ENBState_IsEditorActive);
 
-	if (controlMap) controlMap->ignoreKeyboardMouse = IsEditorActive;
+	if (controlMap)
+		controlMap->GetRuntimeData().ignoreKeyboardMouse = IsEditorActive;
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //Called by ENBSeries. Please do not read or set parameters outside of it

@@ -1,106 +1,147 @@
 {
+	"version": 3,
+	"cmakeMinimumRequired": {
+		"major": 3,
+		"minor": 21,
+		"patch": 0
+	},
 	"configurePresets": [
 		{
-			"binaryDir": "${sourceDir}/build",
-			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": {
-					"type": "STRING",
-					"value": "Release"
-				}
-			},
-			"errors": {
-				"deprecated": true
-			},
+			"name": "common",
 			"hidden": true,
-			"name": "cmake-dev",
-			"warnings": {
-				"deprecated": true,
-				"dev": true
-			}
+			"cacheVariables": {
+				"SKSE_SUPPORT_XBYAK": "ON"
+			},
+			"binaryDir": "${sourceDir}/build"
 		},
 		{
+			"name": "vcpkg",
+			"hidden": true,
 			"cacheVariables": {
 				"CMAKE_TOOLCHAIN_FILE": {
 					"type": "STRING",
 					"value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
-				}
-			},
-			"hidden": true,
-			"name": "vcpkg"
-		},
-		{
-			"cacheVariables": {
-				"CMAKE_MSVC_RUNTIME_LIBRARY": {
-					"type": "STRING",
-					"value": "MultiThreaded$<$<CONFIG:Debug>:Debug>"
 				},
-				"VCPKG_TARGET_TRIPLET": {
+				"VCPKG_OVERLAY_PORTS": {
 					"type": "STRING",
-					"value": "x64-windows-static"
-				}
-			},
-			"hidden": true,
-			"name": "windows"
+					"value": "${sourceDir}/cmake/ports/"
+				  },
+				"VCPKG_TARGET_TRIPLET": "x64-windows-static-md"
+			}
 		},
 		{
-						"binaryDir": "${sourceDir}/build/pre-ae",
+			"name": "win64",
+			"hidden": true,
+			"architecture": "x64",
+			"cacheVariables": {
+				"CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL"
+			}
+		},
+		{
+			"name": "msvc",
+			"hidden": true,
 			"cacheVariables": {
 				"CMAKE_CXX_FLAGS": "/EHsc /MP /W4 /WX $penv{CXXFLAGS}"
 			},
 			"generator": "Visual Studio 17 2022",
-			"inherits": [
-				"cmake-dev",
-				"vcpkg",
-				"windows"
-			],
-			"name": "pre-ae",
-			"toolset": "v143"
+			"vendor": {
+				"microsoft.com/VisualStudioSettings/CMake/1.0": {
+					"intelliSenseMode": "windows-msvc-x64",
+					"enableMicrosoftCodeAnalysis": true,
+					"enableClangTidyCodeAnalysis": true
+				}
+			}
 		},
 		{
-			"binaryDir": "${sourceDir}/build/post-ae",
+			"name": "AE",
 			"cacheVariables": {
-				"CMAKE_CXX_FLAGS": "/EHsc /MP /W4 /WX $penv{CXXFLAGS}",
-				"BUILD_SKYRIMAE": true
+				"BUILD_SKYRIM": true,
+				"ENABLE_SKYRIM_AE": "ON",
+				"ENABLE_SKYRIM_SE": "OFF",
+				"ENABLE_SKYRIM_VR": "OFF"
 			},
-			"generator": "Visual Studio 17 2022",
 			"inherits": [
-				"cmake-dev",
+				"common",
 				"vcpkg",
-				"windows"
-			],
-			"name": "post-ae",
-			"toolset": "v143"
+				"win64",
+				"msvc"
+			]
 		},
 		{
-			"binaryDir": "${sourceDir}/build/vr",
+			"name": "SE",
 			"cacheVariables": {
-				"CMAKE_CXX_FLAGS": "/EHsc /MP /W4 /WX $penv{CXXFLAGS}",
-				"BUILD_SKYRIMVR": true
+				"BUILD_SKYRIM": true,
+				"ENABLE_SKYRIM_AE": "OFF",
+				"ENABLE_SKYRIM_SE": "ON",
+				"ENABLE_SKYRIM_VR": "OFF"
 			},
-			"generator": "Visual Studio 17 2022",
 			"inherits": [
-				"cmake-dev",
+				"common",
 				"vcpkg",
-				"windows"
-			],
-			"name": "vr",
-			"toolset": "v143"
+				"win64",
+				"msvc"
+			]
 		},
 		{
-			"binaryDir": "${sourceDir}/build/f4",
+			"name": "VR",
 			"cacheVariables": {
-				"CMAKE_CXX_FLAGS": "/EHsc /MP /W4 /WX $penv{CXXFLAGS}",
-				"BUILD_FALLOUT4": true
+				"BUILD_SKYRIM": true,
+				"ENABLE_SKYRIM_AE": "OFF",
+				"ENABLE_SKYRIM_SE": "OFF",
+				"ENABLE_SKYRIM_VR": "ON"
 			},
-			"generator": "Visual Studio 17 2022",
 			"inherits": [
-				"cmake-dev",
+				"common",
 				"vcpkg",
-				"windows"
-			],
-			"name": "f4",
-			"toolset": "v143"
+				"win64",
+				"msvc"
+			]
+		},
+		{
+			"name": "ALL",
+			"cacheVariables": {
+				"BUILD_SKYRIM": true,
+				"ENABLE_SKYRIM_AE": "ON",
+				"ENABLE_SKYRIM_SE": "ON",
+				"ENABLE_SKYRIM_VR": "ON"
+			},
+			"inherits": [
+				"common",
+				"vcpkg",
+				"win64",
+				"msvc"
+			]
+		},
+		{
+			"name": "PRE-AE",
+			"cacheVariables": {
+				"BUILD_SKYRIM": true,
+				"ENABLE_SKYRIM_AE": "OFF",
+				"ENABLE_SKYRIM_SE": "ON",
+				"ENABLE_SKYRIM_VR": "ON"
+			},
+			"inherits": [
+				"common",
+				"vcpkg",
+				"win64",
+				"msvc"
+			]
+		},
+		{
+			"name": "FLATRIM",
+			"cacheVariables": {
+				"BUILD_SKYRIM": true,
+				"ENABLE_SKYRIM_AE": "ON",
+				"ENABLE_SKYRIM_SE": "ON",
+				"ENABLE_SKYRIM_VR": "OFF",
+				"Build Tests": "OFF"
+			},
+			"inherits": [
+				"common",
+				"vcpkg",
+				"win64",
+				"msvc"
+			]
 		}
-	],
-	"version": 2
+	]
 }

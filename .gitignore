@@ -2,3 +2,5 @@ build/
 dist/
 vcpkg_installed/
 .idea/
+include/steam/
+.vs/
